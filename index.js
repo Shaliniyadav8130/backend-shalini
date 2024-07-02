@@ -4,7 +4,7 @@ const Pool = require('pg').Pool;
 const path = require('path');
 const ejs = require('ejs');
 const cors = require('cors')
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 require('dotenv').config();
 
 app.use(express.json());
