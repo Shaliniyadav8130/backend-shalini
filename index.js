@@ -8,7 +8,7 @@ app.use(express.json());
 
 // Configure CORS middleware
 const corsOptions = {
-    origin: 'https://fiverr-clone-shalini.vercel.app/', // Replace with your frontend URL
+    origin: 'https://fiverr-clone-shalini.vercel.app', // Replace with your frontend URL
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
