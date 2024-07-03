@@ -60,6 +60,56 @@ app.post('/addtodo', async (req, res) => {
 });
 
 // Other routes (update, read, delete) as before...
+app.put('/update/:id', async (req, res) => {
+    const { id } = req.params;
+    const { todo, date } = req.body;
+
+    try {
+        const result = await pool.query(
+            'UPDATE todo SET todo = $1, date = $2 WHERE id = $3 RETURNING *',
+            [todo, date, id]
+        );
+        return res.status(200).json({ error: false, data: result.rows[0] });
+    } catch (error) {
+        console.error('Database Error:', error);
+        return res.status(500).json({ error: true, message: 'Database error.' });
+    }
+});
+
+app.get('/readtodo/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query('SELECT * FROM todo WHERE id = $1', [id]);
+        return res.status(200).json({ error: false, data: result.rows[0] });
+    } catch (error) {
+        console.error('Database Error:', error);
+        return res.status(500).json({ error: true, message: 'Database error.' });
+    }
+});
+
+app.get('/readtodo', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM todo');
+        return res.status(200).json({ error: false, data: result.rows });
+    } catch (error) {
+        console.error('Database Error:', error);
+        return res.status(500).json({ error: true, message: 'Database error.' });
+    }
+});
+
+app.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query('DELETE FROM todo WHERE id = $1 RETURNING *', [id]);
+        console.log("Row deleted successfully");
+        return res.status(200).json({ error: false, data: result.rows[0] });
+    } catch (error) {
+        console.error('Database Error:', error);
+        return res.status(500).json({ error: true, message: 'Database error.' });
+    }
+});
 
 const PORT = process.env.PORT || 8000;
 
